@@ -51,7 +51,8 @@ void change_blue_channel_in_roi(IplImage* in, CvRect& roi){
 	cvNamedWindow("Changed", CV_WINDOW_AUTOSIZE);
 	cvSetImageROI(in, roi);
 	IplImage* changedImg; // the output image that will be changeds
-	cvAddS(in, cvScalar(150), changedImg); // change the blue channel
+	int scalarInt = 150;
+	cvAddS(in, cvScalar(scalarInt), changedImg); // change the blue channel
 	cvResetImageROI(in); // reset the ROI so that changes aren't restricted to the roi anymore
 	cout << "before showing the image..." << endl;
 	cvShowImage("Original", in);
