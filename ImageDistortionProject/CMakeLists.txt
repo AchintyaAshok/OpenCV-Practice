@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( ImageDistortion )
+find_package( OpenCV REQUIRED )
+add_executable( ImageDistortion ImageDistortion.cpp )
+target_link_libraries( ImageDistortion ${OpenCV_LIBS} )
