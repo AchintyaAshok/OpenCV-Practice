@@ -9,7 +9,7 @@ using namespace std;
 
 IplImage* doPyrDown(IplImage* in, int filter = CV_GAUSSIAN_5x5); // pyramid down -- decrease image size by 2
 IplImage* doCanny( IplImage* in, double lowThresh, double highThresh, double aperture);
-void change_blue_channel_in_roi(IplImage* in, CvRect& roi);
+void change_blue_channel_in_roi(IplImage* in, CvRect roi);
 
 int main(int argc, char** argv){
 	// Part 1
@@ -38,27 +38,28 @@ int main(int argc, char** argv){
 	// cvReleaseImage(&img3);
 
 	// Part 3
-	IplImage* imgPart3 = cvLoadImage(argv[1]);
-	CvRect roi = cvRect(0, 0, 150, 150);
+	IplImage* imgPart3 = cvLoadImage(argv[1], 1);
+	CvRect roi = cvRect(225, 225, 150, 150); // the size and coordinates for the roi
 	change_blue_channel_in_roi(imgPart3, roi); // x=0, y=0, width=150, height=150
 	cvReleaseImage(&imgPart3);
 	return 0;
 }
 
 /* Use Image ROI to increase the blue channel in all pixels in the region */
-void change_blue_channel_in_roi(IplImage* in, CvRect& roi){
+void change_blue_channel_in_roi(IplImage* in, CvRect roi){
 	cvNamedWindow("Original", CV_WINDOW_AUTOSIZE);
-	cvNamedWindow("Changed", CV_WINDOW_AUTOSIZE);
+	//cvNamedWindow("Changed", CV_WINDOW_AUTOSIZE);
+	cout << "before setting roi" << endl;
 	cvSetImageROI(in, roi);
-	IplImage* changedImg; // the output image that will be changeds
+	IplImage* changedImg = NULL; // the output image that will be changeds
 	int scalarInt = 150;
-	cvAddS(in, cvScalar(scalarInt), changedImg); // change the blue channel
+	cvAddS(in, cvScalar(scalarInt), in); // change the blue channel
 	cvResetImageROI(in); // reset the ROI so that changes aren't restricted to the roi anymore
 	cout << "before showing the image..." << endl;
 	cvShowImage("Original", in);
-	cvShowImage("Changed", changedImg);
+	//cvShowImage("Changed", changedImg);
 	cvWaitKey(0);
-	cvReleaseImage(&changedImg); // release the memory allocated for the image
+	//cvReleaseImage(&changedImg); // release the memory allocated for the image
 }
 
 IplImage* doPyrDown(IplImage* in, int filter){
